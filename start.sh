@@ -16,6 +16,8 @@ sleep 2
 # Start frontend
 echo "Starting frontend on http://localhost:5173..."
 cd frontend
+npm install
+npm run build
 npm run dev &
 FRONTEND_PID=$!
 
