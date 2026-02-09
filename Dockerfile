@@ -7,13 +7,20 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+
+# Install Python dependencies (cached layer)
+COPY pyproject.toml uv.lock ./
+RUN pip install uv && uv sync
+
+# Install and build frontend (cached layer)
+COPY frontend/package.json frontend/package-lock.json frontend/
+RUN cd frontend && npm ci
+
+# Copy the rest of the source code
 COPY . .
 
-RUN pip install uv && uv sync
-RUN cd frontend && npm install && npm run build
+# Build frontend
+RUN cd frontend && npm run build
 
-# Делаем start.sh исполняемым
-RUN chmod +x start.sh
-
-# Запускаем start.sh
-CMD ["./start.sh"]
+# Single process: FastAPI serves API + static frontend
+CMD ["uv", "run", "python", "-m", "backend.main"]
