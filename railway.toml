@@ -4,5 +4,14 @@ builder = "nixpacks"
 [build.nixpacksPlan]
 providers = ["python", "node"]
 
-[deploy]
-startCommand = "./start.sh"
+[build.nixpacksPlan.phases.setup]
+nixPkgs = ["python310", "nodejs-20_x"]
+
+[build.nixpacksPlan.phases.install]
+cmds = ["pip install uv", "uv sync", "cd frontend && npm install"]
+
+[build.nixpacksPlan.phases.build]
+cmds = ["cd frontend && npm run build"]
+
+[build.nixpacksPlan.start]
+cmd = "uv run python -m backend.main"
