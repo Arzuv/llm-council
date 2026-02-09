@@ -1,11 +1,8 @@
 [build]
 builder = "nixpacks"
 
-[build.nixpacksPlan]
-providers = ["python", "node"]
-
 [build.nixpacksPlan.phases.setup]
-nixPkgs = ["python310", "nodejs-20_x"]
+nixPkgs = ["python310", "nodejs_20"]
 
 [build.nixpacksPlan.phases.install]
 cmds = ["pip install uv", "uv sync", "cd frontend && npm install"]
