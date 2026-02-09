@@ -26,3 +26,6 @@ echo "✓ LLM Council is running!"
 echo "  Backend:  http://localhost:8001"
 echo "  Frontend: http://localhost:5173"
 echo ""
+
+echo "Starting backend on http://0.0.0.0:8001..."
+uv run python -m backend.main
